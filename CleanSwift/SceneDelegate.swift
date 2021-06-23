@@ -13,9 +13,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @available(iOS 13.0, *)
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let _ = (scene as? UIWindowScene) else { return }
-        self.window = UIWindow()
-        let vc = UIViewController()
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        self.window = UIWindow(windowScene: windowScene)
+        let vc = RepositoriesListViewController()
         self.window!.rootViewController = vc
         self.window!.makeKeyAndVisible()
     }

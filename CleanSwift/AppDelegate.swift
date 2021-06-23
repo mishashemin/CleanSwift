@@ -16,8 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             // do only pure app launch stuff, not interface stuff
         } else {
-            self.window = UIWindow()
-            let vc = UIViewController()
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            let vc = RepositoriesListViewController()
             self.window!.rootViewController = vc
             self.window!.makeKeyAndVisible()
         }
