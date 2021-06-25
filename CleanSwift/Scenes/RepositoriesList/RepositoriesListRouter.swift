@@ -21,6 +21,13 @@ class RepositoriesListRouter: RepositoriesListDataPassing {
 
 extension RepositoriesListRouter: RepositoriesListRoutingLogic {
     func routeToRepository(path: String) {
+        let repositoryViewController = RepositoryViewController()
+        repositoryViewController.router?.dataStore?.path = path
         
+        if let navigationController = viewController?.navigationController {
+            navigationController.pushViewController(repositoryViewController, animated: true)
+        } else {
+            viewController?.present(repositoryViewController, animated: true)
+        }
     }
 }

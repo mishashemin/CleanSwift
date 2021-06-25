@@ -10,6 +10,7 @@ private enum Comstants {
     static let baseHeaders = ["Accept": "application/vnd.github.v3+json"]
     
     static let featchRepositoriesPath = "/search/repositories"
+    static let featchRepositoryPath = "/repos/"
 }
 
 import Foundation
@@ -39,6 +40,28 @@ class RepositoriesApiService: BaseApiService {
                                     parameters: ["q": searchQuery],
                                     parse: { data in
                                         return try JSONDecoder().decode(FetchRepositoriesResponse.self, from: data)
+                                    })
+        
+        let task = sendRequest(resource)
+            .on(starting: startHadler,
+                failed: errorHandler,
+                value: completionHandler)
+            .start()
+        
+        return task
+    }
+    
+    func featchRepository(path: String,
+                          startHadler: (() -> Void)? = nil,
+                          errorHandler: ((BaseJsonApiServiceError) -> Void)? = nil,
+                          completionHandler: @escaping (FetchRepositoryResponse) -> Void) -> CancelableTask {
+        
+        let urlString = Comstants.featchRepositoryPath + path
+        
+        let resource = HTTPResource(urlString: urlString,
+                                    method: .get,
+                                    parse: { data in
+                                        return try JSONDecoder().decode(FetchRepositoryResponse.self, from: data)
                                     })
         
         let task = sendRequest(resource)

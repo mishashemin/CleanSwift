@@ -26,6 +26,12 @@
 		1684D00426861DAF00DB701D /* RepositoriesWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D00326861DAF00DB701D /* RepositoriesWorker.swift */; };
 		1684D00726861E0900DB701D /* RepositoriesApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D00626861E0900DB701D /* RepositoriesApiService.swift */; };
 		1684D00A2686248000DB701D /* HTTPResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D0092686248000DB701D /* HTTPResource.swift */; };
+		1684D012268642EC00DB701D /* RepositoryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D00C268642EC00DB701D /* RepositoryPresenter.swift */; };
+		1684D014268642EC00DB701D /* RepositoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D00E268642EC00DB701D /* RepositoryRouter.swift */; };
+		1684D015268642EC00DB701D /* RepositoryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D00F268642EC00DB701D /* RepositoryModels.swift */; };
+		1684D016268642EC00DB701D /* RepositoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D010268642EC00DB701D /* RepositoryViewController.swift */; };
+		1684D017268642EC00DB701D /* RepositoryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D011268642EC00DB701D /* RepositoryInteractor.swift */; };
+		1684D01926865BC000DB701D /* FetchRepositoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1684D01826865BC000DB701D /* FetchRepositoryResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +56,12 @@
 		1684D00326861DAF00DB701D /* RepositoriesWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesWorker.swift; sourceTree = "<group>"; };
 		1684D00626861E0900DB701D /* RepositoriesApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesApiService.swift; sourceTree = "<group>"; };
 		1684D0092686248000DB701D /* HTTPResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPResource.swift; sourceTree = "<group>"; };
+		1684D00C268642EC00DB701D /* RepositoryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryPresenter.swift; sourceTree = "<group>"; };
+		1684D00E268642EC00DB701D /* RepositoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryRouter.swift; sourceTree = "<group>"; };
+		1684D00F268642EC00DB701D /* RepositoryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryModels.swift; sourceTree = "<group>"; };
+		1684D010268642EC00DB701D /* RepositoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryViewController.swift; sourceTree = "<group>"; };
+		1684D011268642EC00DB701D /* RepositoryInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryInteractor.swift; sourceTree = "<group>"; };
+		1684D01826865BC000DB701D /* FetchRepositoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRepositoryResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +112,7 @@
 		1684CF4F2683AF1400DB701D /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				1684D00B268642DE00DB701D /* Repository */,
 				1684CF522683B53100DB701D /* RepositoriesList */,
 			);
 			path = Scenes;
@@ -125,13 +138,13 @@
 		1684CF522683B53100DB701D /* RepositoriesList */ = {
 			isa = PBXGroup;
 			children = (
-				1684CFE42685059500DB701D /* Views */,
-				1684CF602683C31400DB701D /* Cells */,
 				1684CF582683B58B00DB701D /* RepositoriesListInteractor.swift */,
 				1684CF532683B58B00DB701D /* RepositoriesListPresenter.swift */,
 				1684CF572683B58B00DB701D /* RepositoriesListViewController.swift */,
 				1684CF562683B58B00DB701D /* RepositoriesListModels.swift */,
 				1684CF552683B58B00DB701D /* RepositoriesListRouter.swift */,
+				1684CFE42685059500DB701D /* Views */,
+				1684CF602683C31400DB701D /* Cells */,
 			);
 			path = RepositoriesList;
 			sourceTree = "<group>";
@@ -190,8 +203,21 @@
 			isa = PBXGroup;
 			children = (
 				1684D00126861CC900DB701D /* FetchRepositoriesResponse.swift */,
+				1684D01826865BC000DB701D /* FetchRepositoryResponse.swift */,
 			);
 			path = Responses;
+			sourceTree = "<group>";
+		};
+		1684D00B268642DE00DB701D /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				1684D011268642EC00DB701D /* RepositoryInteractor.swift */,
+				1684D00C268642EC00DB701D /* RepositoryPresenter.swift */,
+				1684D010268642EC00DB701D /* RepositoryViewController.swift */,
+				1684D00F268642EC00DB701D /* RepositoryModels.swift */,
+				1684D00E268642EC00DB701D /* RepositoryRouter.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +291,7 @@
 			files = (
 				1684CFF426852A9600DB701D /* ParameterEncoding.swift in Sources */,
 				1684CF632683C33900DB701D /* RepositoryTableViewCell.swift in Sources */,
+				1684D012268642EC00DB701D /* RepositoryPresenter.swift in Sources */,
 				1684CFE92685096B00DB701D /* UIView+Ext.swift in Sources */,
 				1684CF5B2683B58B00DB701D /* RepositoriesListRouter.swift in Sources */,
 				1684CFEF2685227A00DB701D /* URLRequest+HTTPMethod.swift in Sources */,
@@ -273,11 +300,16 @@
 				1684CF5C2683B58B00DB701D /* RepositoriesListModels.swift in Sources */,
 				1684CF5E2683B58B00DB701D /* RepositoriesListInteractor.swift in Sources */,
 				1684CF5D2683B58B00DB701D /* RepositoriesListViewController.swift in Sources */,
+				1684D016268642EC00DB701D /* RepositoryViewController.swift in Sources */,
 				1684CF592683B58B00DB701D /* RepositoriesListPresenter.swift in Sources */,
 				1684CFEB2685190D00DB701D /* BaseJsonApiService.swift in Sources */,
+				1684D014268642EC00DB701D /* RepositoryRouter.swift in Sources */,
+				1684D01926865BC000DB701D /* FetchRepositoryResponse.swift in Sources */,
 				1684D00726861E0900DB701D /* RepositoriesApiService.swift in Sources */,
 				1684CFE6268505CF00DB701D /* FetchRepositoriesStatusView.swift in Sources */,
+				1684D017268642EC00DB701D /* RepositoryInteractor.swift in Sources */,
 				1684D00226861CC900DB701D /* FetchRepositoriesResponse.swift in Sources */,
+				1684D015268642EC00DB701D /* RepositoryModels.swift in Sources */,
 				1684CF3E2683A9CD00DB701D /* SceneDelegate.swift in Sources */,
 				1684D00A2686248000DB701D /* HTTPResource.swift in Sources */,
 			);
