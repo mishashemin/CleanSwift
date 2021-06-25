@@ -27,8 +27,7 @@ extension RepositoriesListPresenter: RepositoriesListPresentationLogic {
                 return RepositoriesList.FetchRepositories.ViewModel.Repository.init(
                     name: rawRepository.name,
                     description: rawRepository.description ?? "Описание отсутсвует",
-                    language: rawRepository.language ?? "-",
-                    id: rawRepository.id
+                    language: rawRepository.language ?? "-"
                 )
             })
         let viewModel = RepositoriesList.FetchRepositories.ViewModel(repositories: repositories)
@@ -36,7 +35,7 @@ extension RepositoriesListPresenter: RepositoriesListPresentationLogic {
     }
     
     func showRepository(response: RepositoriesList.SelectRepository.Response) {
-        let viewModel = RepositoriesList.SelectRepository.ViewModel(repositoryId: response.repositoryId)
+        let viewModel = RepositoriesList.SelectRepository.ViewModel(repositoryPath: response.repositoryPath)
         viewController?.showRepository(viewModel: viewModel)
     }
 }

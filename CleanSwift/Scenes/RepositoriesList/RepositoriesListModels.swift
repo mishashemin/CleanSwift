@@ -19,7 +19,6 @@ enum RepositoriesList {
                 var name: String
                 var description: String
                 var language: String
-                var id: Int
             }
             var repositories: [Repository]
         }
@@ -27,13 +26,13 @@ enum RepositoriesList {
     
     enum SelectRepository {
         struct Request {
-            var repositoryId: Int
+            var index: Int
         }
         struct Response {
-            var repositoryId: Int
+            var repositoryPath: String
         }
         struct ViewModel {
-            var repositoryId: Int
+            var repositoryPath: String
         }
     }
 }

@@ -15,13 +15,15 @@ struct FetchRepositoriesResponse: Codable {
     }
     
     struct Repository: Codable {
+        var path: String
         var name: String
         var description: String?
         var language: String?
         var id: Int
         
         enum CodingKeys: String, CodingKey {
-            case name = "full_name"
+            case path = "full_name"
+            case name 
             case description
             case language
             case id

@@ -18,11 +18,25 @@ class RepositoriesListInteractor {
     var worker: RepositoriesWorker = RepositoriesWorker(repositoriesStore: RepositoriesApiService.shared)
     
     private weak var lastTask: CancelableTask?
+    private var responseData: FetchRepositoriesResponse? {
+        willSet {
+            guard let newValue = newValue else {
+                return
+            }
+            let response = RepositoriesList.FetchRepositories.Response.init(repositoriesResponse: newValue)
+            presenter?.displayRepositories(response: response)
+        }
+    }
 }
 
 extension RepositoriesListInteractor: RepositoriesListBusinessLogic {
     func showRepository(request: RepositoriesList.SelectRepository.Request) {
-        let response = RepositoriesList.SelectRepository.Response(repositoryId: request.repositoryId)
+        guard let responseData = responseData,
+              responseData.items.count > request.index else {
+            return
+        }
+        let repository = responseData.items[request.index]
+        let response = RepositoriesList.SelectRepository.Response(repositoryPath: repository.path)
         presenter?.showRepository(response: response)
     }
     
@@ -42,14 +56,13 @@ extension RepositoriesListInteractor: RepositoriesListBusinessLogic {
                 errorHandler: { [weak presenter] error in
                     presenter?.setFetchStatus(.error(error: error))
                 },
-                completionHandler: { [weak presenter] value in
+                completionHandler: { [weak self, weak presenter] value in
                     if value.count == 0 {
                         presenter?.setFetchStatus(.emptyResponse)
                     } else {
-                        let response = RepositoriesList.FetchRepositories.Response.init(repositoriesResponse: value)
                         presenter?.setFetchStatus(.success)
-                        presenter?.displayRepositories(response: response)
                     }
+                    self?.responseData = value
                 }
             )
         }

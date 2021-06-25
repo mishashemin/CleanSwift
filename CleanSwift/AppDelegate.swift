@@ -17,8 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // do only pure app launch stuff, not interface stuff
         } else {
             self.window = UIWindow(frame: UIScreen.main.bounds)
-            let vc = RepositoriesListViewController()
-            self.window!.rootViewController = vc
+            let viewController = RepositoriesListViewController()
+            let navigationControlle = UINavigationController(rootViewController: viewController)
+            self.window!.rootViewController = navigationControlle
             self.window!.makeKeyAndVisible()
         }
         return true

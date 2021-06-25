@@ -99,8 +99,17 @@ class RepositoriesListViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectedRow = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedRow, animated: false)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.title = "Репозитории"
+        self.navigationItem.title = "Репозитории"
         
         let request = RepositoriesList.FetchRepositories.Request(searchQuery: searchBar.text ?? "")
         interactor?.fetchRepositories(request: request)
@@ -119,6 +128,7 @@ extension RepositoriesListViewController: RepositoriesListDisplayLogic {
     }
     
     func showRepository(viewModel: RepositoriesList.SelectRepository.ViewModel) {
+        router?.routeToRepository(path: viewModel.repositoryPath)
     }
     
     func updateRepositories(viewModel: RepositoriesList.FetchRepositories.ViewModel) {
@@ -132,10 +142,7 @@ extension RepositoriesListViewController: RepositoriesListDisplayLogic {
 
 extension RepositoriesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? RepositoryTableViewCell else {
-            return
-        }
-        let request = RepositoriesList.SelectRepository.Request(repositoryId: cell.id)
+        let request = RepositoriesList.SelectRepository.Request(index: indexPath.row)
         interactor?.showRepository(request: request)
     }
     
@@ -156,8 +163,7 @@ extension RepositoriesListViewController: UITableViewDataSource {
         let repository = repositories[indexPath.row]
         cell.configure(with: RepositoryTableViewCell.Repository(name: repository.name,
                                                                 description: repository.description,
-                                                                mainLanguage: repository.language,
-                                                                id: repository.id))
+                                                                mainLanguage: repository.language))
         return cell
     }
 }

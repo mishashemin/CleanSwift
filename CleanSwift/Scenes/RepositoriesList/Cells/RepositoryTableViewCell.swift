@@ -56,8 +56,6 @@ class RepositoryTableViewCell: UITableViewCell {
         return label
     }()
     
-    private(set) var id: Int = -1
-    
     static let reuseIdentifier = "RepositoryTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -106,14 +104,12 @@ class RepositoryTableViewCell: UITableViewCell {
         namelabel.text = repository.name
         descriptionLabel.text = repository.description
         languageDescriptionLabel.text = repository.mainLanguage
-        id = repository.id
     }
     
     override func prepareForReuse() {
         namelabel.text = ""
         descriptionLabel.text = ""
         languageDescriptionLabel.text = ""
-        id = -1
     }
 }
 
@@ -122,6 +118,5 @@ extension RepositoryTableViewCell {
         let name: String
         let description: String
         let mainLanguage: String
-        let id: Int
     }
 }

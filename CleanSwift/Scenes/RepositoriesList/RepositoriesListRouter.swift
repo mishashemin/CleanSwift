@@ -7,20 +7,20 @@
 import UIKit
 
 protocol RepositoriesListRoutingLogic {
-    func routeToRepository(id: Int)
+    func routeToRepository(path: String)
 }
 
 protocol RepositoriesListDataPassing {
-  var dataStore: RepositoriesListDataStore? { get }
+    var dataStore: RepositoriesListDataStore? { get }
 }
 
 class RepositoriesListRouter: RepositoriesListDataPassing {
-  weak var viewController: RepositoriesListViewController?
-  var dataStore: RepositoriesListDataStore?
+    weak var viewController: RepositoriesListViewController?
+    var dataStore: RepositoriesListDataStore?
 }
 
 extension RepositoriesListRouter: RepositoriesListRoutingLogic {
-    func routeToRepository(id: Int) {
+    func routeToRepository(path: String) {
         
     }
 }
