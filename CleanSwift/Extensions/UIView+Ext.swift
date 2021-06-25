@@ -10,6 +10,9 @@ import UIKit
 extension UIView {
 
     func startRotating() {
+        guard self.layer.animation(forKey: "rotationAnimationExtension") == nil else {
+            return
+        }
         let rotationAnimation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.toValue = NSNumber(value: Double.pi * 2.0)
         rotationAnimation.duration = 1
