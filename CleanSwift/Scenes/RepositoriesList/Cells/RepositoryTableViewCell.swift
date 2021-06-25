@@ -10,50 +10,50 @@ import UIKit
 class RepositoryTableViewCell: UITableViewCell {
     
     private lazy var namelabel: UILabel = {
-        let name = UILabel()
-        name.translatesAutoresizingMaskIntoConstraints = false
-        name.font = UIFont.boldSystemFont(ofSize: 18.0)
-        name.numberOfLines = 0
-        addSubview(name)
-        return name
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 18.0)
+        label.numberOfLines = 0
+        addSubview(label)
+        return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
-        let description = UILabel()
-        description.translatesAutoresizingMaskIntoConstraints = false
-        description.font = UIFont.systemFont(ofSize: 15.0)
-        description.numberOfLines = 0
-        addSubview(description)
-        return description
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.numberOfLines = 0
+        addSubview(label)
+        return label
     }()
     
     private lazy var languageLabel: UILabel = {
-        let language = UILabel()
-        language.translatesAutoresizingMaskIntoConstraints = false
-        language.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
-        language.font = UIFont.systemFont(ofSize: 15.0)
-        language.text = "Основной язык:"
-        addSubview(language)
-        return language
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.text = "Основной язык:"
+        addSubview(label)
+        return label
     }()
     
     private lazy var languageDescriptionLabel: UILabel = {
-        let languageDescription = UILabel()
-        languageDescription.translatesAutoresizingMaskIntoConstraints = false
-        languageDescription.setContentHuggingPriority(.init(rawValue: 250), for: .horizontal)
-        languageDescription.font = UIFont.systemFont(ofSize: 15.0)
-        languageDescription.textColor = UIColor.gray
-        addSubview(languageDescription)
-        return languageDescription
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.init(rawValue: 250), for: .horizontal)
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = UIColor.gray
+        addSubview(label)
+        return label
     }()
     
     private lazy var rightArrowIcon: UIImageView = {
-        let rightArrowIcon = UIImageView()
-        rightArrowIcon.translatesAutoresizingMaskIntoConstraints = false
-        rightArrowIcon.contentMode = .scaleAspectFit
-        rightArrowIcon.image = #imageLiteral(resourceName: "rightArrow")
-        addSubview(rightArrowIcon)
-        return rightArrowIcon
+        let label = UIImageView()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.contentMode = .scaleAspectFit
+        label.image = #imageLiteral(resourceName: "rightArrow")
+        addSubview(label)
+        return label
     }()
     
     private(set) var id: Int = -1
@@ -66,21 +66,20 @@ class RepositoryTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupConstraint()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupConstraint() {
         NSLayoutConstraint.activate([
             namelabel.topAnchor.constraint(equalTo: self.topAnchor,constant: 10),
             namelabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24),
-            namelabel.rightAnchor.constraint(greaterThanOrEqualTo: rightArrowIcon.leftAnchor, constant: 10),
+            namelabel.rightAnchor.constraint(lessThanOrEqualTo: rightArrowIcon.leftAnchor, constant: -10),
             namelabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -10)
         ])
         
         NSLayoutConstraint.activate([
             descriptionLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24),
-            descriptionLabel.rightAnchor.constraint(greaterThanOrEqualTo: rightArrowIcon.leftAnchor, constant: 10),
+            descriptionLabel.rightAnchor.constraint(lessThanOrEqualTo: rightArrowIcon.leftAnchor, constant: -10),
             descriptionLabel.bottomAnchor.constraint(equalTo: languageLabel.topAnchor, constant: -10)
         ])
         
@@ -92,7 +91,7 @@ class RepositoryTableViewCell: UITableViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            languageDescriptionLabel.rightAnchor.constraint(greaterThanOrEqualTo: rightArrowIcon.leftAnchor)
+            languageDescriptionLabel.rightAnchor.constraint(lessThanOrEqualTo: rightArrowIcon.leftAnchor)
         ])
         
         NSLayoutConstraint.activate([

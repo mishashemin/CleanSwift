@@ -8,35 +8,51 @@ import UIKit
 
 protocol RepositoriesListBusinessLogic {
     func fetchRepositories(request: RepositoriesList.FetchRepositories.Request)
-    func showRepository(by id: Int)
+    func showRepository(request: RepositoriesList.SelectRepository.Request)
 }
 
 protocol RepositoriesListDataStore {}
 
 class RepositoriesListInteractor {
     var presenter: RepositoriesListPresentationLogic?
-    var worker: RepositoriesListWorker?
+    var worker: RepositoriesWorker = RepositoriesWorker(repositoriesStore: RepositoriesApiService.shared)
+    
+    private weak var lastTask: CancelableTask?
 }
 
 extension RepositoriesListInteractor: RepositoriesListBusinessLogic {
-    func showRepository(by id: Int) {
-        presenter?.showRepository(by: id)
+    func showRepository(request: RepositoriesList.SelectRepository.Request) {
+        let response = RepositoriesList.SelectRepository.Response(repositoryId: request.repositoryId)
+        presenter?.showRepository(response: response)
     }
     
     func fetchRepositories(request: RepositoriesList.FetchRepositories.Request) {
-        worker = RepositoriesListWorker()
-        worker?.doSomeWork()
-        
-        let repositoriesResponse = RepositoriesList.FetchRepositoriesResponse(
-            count: 2,
-            items: [
-                .init(name: "name1", description: "description1", language: "Swift", id: 1),
-                .init(name: "name2", description: "description2", language: "Swift", id: 1)
-            ]
-        )
-        
-        let response = RepositoriesList.FetchRepositories.Response.init(repositoriesResponse: repositoriesResponse)
-        presenter?.displayRepositories(response: response)
+        if let lastTask = lastTask {
+            lastTask.cancel()
+        }
+        let searchQuery = request.searchQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+        if searchQuery.isEmpty {
+            presenter?.setFetchStatus(.emptyRequest)
+        } else {
+            lastTask = worker.featchRepositories(
+                searchQuery: request.searchQuery,
+                startHadler: { [weak presenter] in
+                    presenter?.setFetchStatus(.loading)
+                },
+                errorHandler: { [weak presenter] error in
+                    presenter?.setFetchStatus(.error(error: error))
+                },
+                completionHandler: { [weak presenter] value in
+                    if value.count == 0 {
+                        presenter?.setFetchStatus(.emptyResponse)
+                    } else {
+                        let response = RepositoriesList.FetchRepositories.Response.init(repositoriesResponse: value)
+                        presenter?.setFetchStatus(.success)
+                        presenter?.displayRepositories(response: response)
+                    }
+                }
+            )
+        }
     }
 }
 

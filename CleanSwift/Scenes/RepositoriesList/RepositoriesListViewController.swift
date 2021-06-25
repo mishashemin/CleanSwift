@@ -7,18 +7,17 @@
 import UIKit
 
 protocol RepositoriesListDisplayLogic: AnyObject {
-    func updateRepositories(viewModel: RepositoriesListViewController.ViewModel)
-    func showRepository(by id: Int)
+    func updateRepositories(viewModel: RepositoriesList.FetchRepositories.ViewModel)
+    func showRepository(viewModel: RepositoriesList.SelectRepository.ViewModel)
+    func update(status: RepositoriesList.FetchRepositoriesStatus)
 }
 
 class RepositoriesListViewController: UIViewController {
-    typealias ViewModel = RepositoriesList.FetchRepositories.ViewModel
-    typealias Request = RepositoriesList.FetchRepositories.Request
     
     var interactor: RepositoriesListBusinessLogic?
     var router: (RepositoriesListRoutingLogic & RepositoriesListDataPassing)?
     
-    private var repositories: [ViewModel.Repository] = []
+    private var repositories: [RepositoriesList.FetchRepositories.ViewModel.Repository] = []
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -32,12 +31,20 @@ class RepositoriesListViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.keyboardDismissMode = .onDrag
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .none
         tableView.register(RepositoryTableViewCell.self, forCellReuseIdentifier: RepositoryTableViewCell.reuseIdentifier)
-        self.view.addSubview(tableView)
+        self.view.insertSubview(tableView, belowSubview: statusView)
         return tableView
+    }()
+    
+    private lazy var statusView: FetchRepositoriesStatusView = {
+        let view = FetchRepositoriesStatusView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        self.view.addSubview(view)
+        return view
     }()
     
     // MARK: Object lifecycle
@@ -46,11 +53,11 @@ class RepositoriesListViewController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
         setupUI()
+        setupConstraint()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: Setup
@@ -70,35 +77,56 @@ class RepositoriesListViewController: UIViewController {
     
     private func setupUI() {
         self.view.backgroundColor = .white
+        
+        let tapOnStatusView = UITapGestureRecognizer(target: self, action: #selector(tapOnStatusView))
+        statusView.addGestureRecognizer(tapOnStatusView)
+    }
+    
+    private func setupConstraint() {
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
             searchBar.leftAnchor.constraint(equalTo: view.leftAnchor)
         ])
         
-        searchBar.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -10).isActive = true
-        
-        NSLayoutConstraint.activate([
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor)
-        ])
-        
+        [tableView, statusView].forEach { subView in
+            NSLayoutConstraint.activate([
+                searchBar.bottomAnchor.constraint(equalTo: subView.topAnchor, constant: -10),
+                subView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                subView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                subView.leftAnchor.constraint(equalTo: view.leftAnchor)
+            ])
+        }
     }
-    // MARK: View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let request = RepositoriesList.FetchRepositories.Request(searchQuery: searchBar.text ?? "")
+        interactor?.fetchRepositories(request: request)
+    }
+    
+    @objc func tapOnStatusView() {
+        searchBar.resignFirstResponder()
     }
 }
 
 extension RepositoriesListViewController: RepositoriesListDisplayLogic {
-    func showRepository(by id: Int) {
+    func update(status: RepositoriesList.FetchRepositoriesStatus) {
+        DispatchQueue.main.async {
+            self.statusView.update(status: status)
+        }
     }
     
-    func updateRepositories(viewModel: ViewModel) {
+    func showRepository(viewModel: RepositoriesList.SelectRepository.ViewModel) {
+    }
+    
+    func updateRepositories(viewModel: RepositoriesList.FetchRepositories.ViewModel) {
         repositories = viewModel.repositories
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
     }
 }
 
@@ -107,7 +135,8 @@ extension RepositoriesListViewController: UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? RepositoryTableViewCell else {
             return
         }
-        interactor?.showRepository(by: cell.id)
+        let request = RepositoriesList.SelectRepository.Request(repositoryId: cell.id)
+        interactor?.showRepository(request: request)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -135,7 +164,7 @@ extension RepositoriesListViewController: UITableViewDataSource {
 
 extension RepositoriesListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let request = Request(searchQuery: searchText)
+        let request = RepositoriesList.FetchRepositories.Request(searchQuery: searchText)
         interactor?.fetchRepositories(request: request)
     }
 }

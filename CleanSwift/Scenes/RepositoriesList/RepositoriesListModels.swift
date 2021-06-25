@@ -30,35 +30,20 @@ enum RepositoriesList {
             var repositoryId: Int
         }
         struct Response {
+            var repositoryId: Int
         }
         struct ViewModel {
+            var repositoryId: Int
         }
     }
 }
 
 extension RepositoriesList {
-    struct FetchRepositoriesResponse: Codable {
-        var count: Int
-        var items: [Repository]
-        
-        enum CodingKeys: String, CodingKey {
-            case count = "total_count"
-            case items
-        }
-        
-        struct Repository: Codable {
-            var name: String
-            var description: String
-            var language: String
-            var id: Int
-            
-            enum CodingKeys: String, CodingKey {
-                case name = "full_name"
-                case description
-                case language
-                case id
-            }
-        }
+    enum FetchRepositoriesStatus {
+        case success
+        case loading
+        case emptyRequest
+        case emptyResponse
+        case error(error: Error)
     }
-    
 }
