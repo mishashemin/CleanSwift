@@ -14,6 +14,7 @@ class FetchRepositoriesStatusView: UIView {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = UIColor.red
+        label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17.0)
         addSubview(label)
         return label
@@ -21,6 +22,8 @@ class FetchRepositoriesStatusView: UIView {
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17.0)
         addSubview(label)
         return label
@@ -53,6 +56,12 @@ class FetchRepositoriesStatusView: UIView {
             NSLayoutConstraint.activate([
                 view.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 view.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            ])
+        }
+        [errorLabel, emptyLabel].forEach { view in
+            NSLayoutConstraint.activate([
+                view.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 24),
+                view.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -24)
             ])
         }
     }

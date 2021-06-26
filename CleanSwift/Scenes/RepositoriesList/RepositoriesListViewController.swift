@@ -135,7 +135,9 @@ extension RepositoriesListViewController: RepositoriesListDisplayLogic {
         repositories = viewModel.repositories
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            if self.repositories.count > 0 {
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
         }
     }
 }
